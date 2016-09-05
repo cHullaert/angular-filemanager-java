@@ -1,16 +1,16 @@
 /**
  * 
  */
-package com.cover.angular_filename.test;
+package com.covergroup.angular_filemanager.test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.cover.angular_filemanager.api.CopyAction;
-import com.cover.angular_filemanager.api.Response;
-import com.cover.angular_filemanager.api.StdResult;
+import com.covergroup.angular_filemanager.api.CopyAction;
+import com.covergroup.angular_filemanager.api.Response;
+import com.covergroup.angular_filemanager.api.StdResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

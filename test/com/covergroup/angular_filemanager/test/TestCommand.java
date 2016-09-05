@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cover.angular_filename.test;
+package com.covergroup.angular_filemanager.test;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cover.angular_filemanager.api.Action;
-import com.cover.angular_filemanager.api.CreateFolderAction;
-import com.cover.angular_filemanager.api.IResourceManager;
-import com.cover.angular_filemanager.api.RemoveAction;
-import com.cover.angular_filemanager.api.Response;
-import com.cover.angular_filemanager.api.SystemResourceManager;
+import com.covergroup.angular_filemanager.api.Action;
+import com.covergroup.angular_filemanager.api.CreateFolderAction;
+import com.covergroup.angular_filemanager.api.IResourceManager;
+import com.covergroup.angular_filemanager.api.RemoveAction;
+import com.covergroup.angular_filemanager.api.Response;
+import com.covergroup.angular_filemanager.api.SystemResourceManager;
 
 /**
  * @author christof

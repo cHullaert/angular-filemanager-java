@@ -1,11 +1,9 @@
 /**
  * 
  */
-package com.cover.angular_filemanager.api;
+package com.covergroup.angular_filemanager.api;
 
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author christof
@@ -29,6 +27,17 @@ public class ResourcesResult extends Result {
 	@Override
 	public String toString() {
 		return "ResourcesResult [resources=" + resources + "]";
+	}
+
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return (this.resources==null) || (this.resources.isEmpty());
 	}
 	
 }

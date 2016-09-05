@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cover.angular_filemanager.api;
+package com.covergroup.angular_filemanager.api;
 
 /**
  * @author christof
@@ -16,6 +16,14 @@ public class Response {
 
 	public Result getResult() {
 		return result;
+	}
+	
+	public boolean isValid() {
+		return (result!=null) && (result.isValid());
+	}
+	
+	public boolean isEmpty() {
+		return result.isEmpty();
 	}
 
 	public void setResult(Result result) {

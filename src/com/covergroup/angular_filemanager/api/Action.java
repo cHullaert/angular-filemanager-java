@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cover.angular_filemanager.api;
+package com.covergroup.angular_filemanager.api;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 

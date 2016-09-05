@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cover.angular_filemanager.api;
+package com.covergroup.angular_filemanager.api;
 
 /**
  * @author christof
@@ -31,6 +31,14 @@ public class StdResult extends Result {
 	@Override
 	public String toString() {
 		return "StdResult [success=" + success + ", error=" + error + "]";
+	}
+	@Override
+	public boolean isValid() {
+		return this.success;
+	}
+	@Override
+	public boolean isEmpty() {
+		return false;
 	}
 	
 }

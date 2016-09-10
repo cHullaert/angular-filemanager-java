@@ -14,6 +14,16 @@ public class RenameAction extends Action {
 	private String item;
 	private String newItemPath;
 	
+	public RenameAction() {
+		this.item="";
+		this.newItemPath="";
+	}
+	
+	public RenameAction(String item, String newItemPath) {
+		this.item=item;
+		this.newItemPath=newItemPath;
+	}
+	
 	public String getItem() {
 		return item;
 	}
@@ -34,4 +44,11 @@ public class RenameAction extends Action {
 	public Response execute(IResourceManager resourceManager) {
 		return resourceManager.rename(this);
 	}
+
+	@Override
+	public String toString() {
+		return "RenameAction [item=" + item + ", newItemPath=" + newItemPath + "]";
+	}
+	
+	
 }

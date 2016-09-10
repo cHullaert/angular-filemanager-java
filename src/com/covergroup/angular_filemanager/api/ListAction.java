@@ -13,6 +13,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class ListAction extends Action {
 	private String path;
 
+	public ListAction() {
+		this.path="";
+	}
+	
+	public ListAction(String path) {
+		this.path=path;
+	}
 	
 	public String getPath() {
 		return path;
@@ -23,11 +30,16 @@ public class ListAction extends Action {
 		this.path = path;
 	}
 
-
 	@Override
 	public Response execute(IResourceManager resourceManager) {
 		return resourceManager.list(this);
-		
 	}
+
+	@Override
+	public String toString() {
+		return "ListAction [path=" + path + "]";
+	}
+	
+	
 	
 }

@@ -44,6 +44,10 @@ public abstract class Resource {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	@Override
+	public String toString() {
+		return "Resource [name=" + name + ", rights=" + rights + ", size=" + size + ", date=" + date + "]";
+	}
 	
 	
 }

@@ -3,6 +3,7 @@
  */
 package com.covergroup.angular_filemanager.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,6 +17,18 @@ public class CopyAction extends Action {
 	private List<String> items;
 	private String newPath;
 	private String singleFilename;
+	
+	public CopyAction() {
+		this.items=new ArrayList<>();
+		this.newPath="";
+		this.singleFilename="";
+	}
+	
+	public CopyAction(String newPath, String singleFilename, List<String> items) {
+		this.items=items;
+		this.newPath=newPath;
+		this.singleFilename=singleFilename;
+	}
 	
 	public List<String> getItems() {
 		return items;
@@ -45,4 +58,10 @@ public class CopyAction extends Action {
 	public Response execute(IResourceManager resourceManager) {
 		return resourceManager.copy(this);
 	}
+
+	@Override
+	public String toString() {
+		return "CopyAction [items=" + items + ", newPath=" + newPath + ", singleFilename=" + singleFilename + "]";
+	}
+	
 }

@@ -37,4 +37,11 @@ public class CreateFolderAction extends Action {
 	public Response execute(IResourceManager resourceManager) {
 		return resourceManager.createFolder(this);
 	}
+
+	@Override
+	public String toString() {
+		return "CreateFolderAction [newPath=" + newPath + "]";
+	}
+	
+	
 }

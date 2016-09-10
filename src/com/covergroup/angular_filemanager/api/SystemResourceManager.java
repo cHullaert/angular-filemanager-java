@@ -20,8 +20,10 @@ public class SystemResourceManager implements IResourceManager {
 	
 	private Response createReponse(String path, String[] list) {
 		List<Resource> resources=new ArrayList<>();
-		for(String resource: list) {
-			resources.add(createResource(path+'/'+resource));
+		if(list!=null) {
+			for(String resource: list) {
+				resources.add(createResource(path+'/'+resource));
+			}
 		}
 		
 		return new Response(new ResourcesResult(resources));

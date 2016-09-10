@@ -3,7 +3,12 @@
  */
 package com.covergroup.angular_filemanager.api;
 
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +23,7 @@ public class SystemResourceManager implements IResourceManager {
 	
 	private String relativePath;
 	
-	private Response createReponse(String path, String[] list) {
+	private Response createArrayReponse(String path, String[] list) {
 		List<Resource> resources=new ArrayList<>();
 		if(list!=null) {
 			for(String resource: list) {
@@ -47,9 +52,13 @@ public class SystemResourceManager implements IResourceManager {
 		
 		return result;
 	}
-
+	
 	private Response createResponse(boolean success, String error) {
 		return new Response(new StdResult(success, error));
+	}
+	
+	private Response createExceptionResponse(boolean success, Exception error) {
+		return createResponse(success, error.toString());
 	}
 	
 	public SystemResourceManager() {
@@ -67,11 +76,15 @@ public class SystemResourceManager implements IResourceManager {
 	public Response copy(CopyAction action) {
 		if(action.getItems().size()==1) {
 			File source=new File(relativePath+action.getItems().get(0));
-			File target=new File(relativePath+action.getNewPath()+'/'+action.getSingleFilename());
+			String newName=action.getSingleFilename();
+			if(newName==null)
+				newName=source.getName();
+	
+			File target=new File(relativePath+action.getNewPath()+'/'+newName);
 			try {
 				Files.copy(source.toPath(), target.toPath());
 			} catch (IOException e) {
-				return createResponse(false, e.getMessage());
+				return createExceptionResponse(false, e);
 			}
 		}
 		else {
@@ -81,7 +94,7 @@ public class SystemResourceManager implements IResourceManager {
 				try {
 					Files.copy(source.toPath(), target.toPath());
 				} catch (IOException e) {
-					return createResponse(false, e.getMessage());
+					return createExceptionResponse(false, e);
 				}
 			}
 		}
@@ -107,11 +120,11 @@ public class SystemResourceManager implements IResourceManager {
 	@Override
 	public Response createFolder(CreateFolderAction action) {
 		File directory=new File(relativePath+action.getNewPath());
-		if(directory.mkdir()) {
+		if(directory.mkdirs()) {
 			return createResponse(true, null);
 		}
 		
-		return createResponse(false, "cannot create directory");
+		return createResponse(false, "cannot create directory "+directory.getPath());
 	}
 
 	/* (non-Javadoc)
@@ -120,7 +133,7 @@ public class SystemResourceManager implements IResourceManager {
 	@Override
 	public Response list(ListAction action) {
 		File directory=new File(relativePath+action.getPath());
-		return createReponse(relativePath+action.getPath(), directory.list());
+		return createArrayReponse(relativePath+action.getPath(), directory.list());
 	}
 
 	/* (non-Javadoc)
@@ -135,11 +148,11 @@ public class SystemResourceManager implements IResourceManager {
 			try {
 				Files.move(source.toPath(), target.toPath());
 			} catch (IOException e) {
-				return createResponse(false, e.getMessage());
+				return createExceptionResponse(false, e);
 			}
 		}
 		
-		return createResponse(true, null);
+		return createExceptionResponse(true, null);
 	}
 
 	/* (non-Javadoc)
@@ -148,11 +161,11 @@ public class SystemResourceManager implements IResourceManager {
 	@Override
 	public Response rename(RenameAction action) {
 		File source=new File(relativePath+action.getItem());
-		File target=new File(relativePath+action.getNewItemPath()+'/'+source.getName());
+		File target=new File(source.getParentFile().getPath()+'/'+action.getNewItemPath());
 		try {
 			Files.move(source.toPath(), target.toPath());
 		} catch (IOException e) {
-			return createResponse(false, e.getMessage());
+			return createExceptionResponse(false, e);
 		}
 		
 		return createResponse(true, null);
@@ -165,10 +178,31 @@ public class SystemResourceManager implements IResourceManager {
 	public Response remove(RemoveAction action) {
 		for(String item: action.getItems()) {
 			File source=new File(relativePath+item);
+			
 			try {
-				Files.delete(source.toPath());
+				if(source.isDirectory()) {
+					Path directory = Paths.get(source.getPath());
+					   Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+						   @Override
+						   public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+							   Files.delete(file);
+							   return FileVisitResult.CONTINUE;
+						   }
+	
+						   @Override
+						   public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+							   Files.delete(dir);
+							   return FileVisitResult.CONTINUE;
+						   }
+	
+					   });			
+				}
+				else
+				{
+					Files.delete(source.toPath());
+				}
 			} catch (IOException e) {
-				return createResponse(false, e.getMessage());
+				return createExceptionResponse(false, e);
 			}
 		}
 		

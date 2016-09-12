@@ -8,5 +8,7 @@ package com.covergroup.angular_filemanager.api;
  *
  */
 public class Directory extends Resource {
-
+	public String getType() {
+		return "dir";
+	}
 }

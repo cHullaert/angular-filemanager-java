@@ -20,6 +20,10 @@ import com.covergroup.angular_filemanager.api.RemoveAction;
 import com.covergroup.angular_filemanager.api.RenameAction;
 import com.covergroup.angular_filemanager.api.Response;
 import com.covergroup.angular_filemanager.api.SystemResourceManager;
+import com.covergroup.angular_filemanager.api.serializer.ResourcesResultSerializer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
  * @author christof
@@ -53,6 +57,17 @@ public class TestCommand {
 	
 	private void assertActionResult(Action action, Response expected, String log) {
 		Response response=action.execute(manager);
+		
+		ObjectMapper mapper=new ObjectMapper();
+		try {
+			SimpleModule module=new SimpleModule();
+			module.addSerializer(new ResourcesResultSerializer());
+			mapper.registerModule(module);
+			
+			System.out.println(mapper.writeValueAsString(response));
+		} catch (JsonProcessingException e) {
+		}
+		
 		System.out.println(log+": "+response.getResult().toString());
 	}
 	

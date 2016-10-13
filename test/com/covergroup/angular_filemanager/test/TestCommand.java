@@ -4,6 +4,9 @@
 package com.covergroup.angular_filemanager.test;
 
 import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -12,8 +15,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.covergroup.angular_filemanager.api.Action;
+import com.covergroup.angular_filemanager.api.CompressAction;
 import com.covergroup.angular_filemanager.api.CopyAction;
 import com.covergroup.angular_filemanager.api.CreateFolderAction;
+import com.covergroup.angular_filemanager.api.ExtractAction;
 import com.covergroup.angular_filemanager.api.IResourceManager;
 import com.covergroup.angular_filemanager.api.ListAction;
 import com.covergroup.angular_filemanager.api.RemoveAction;
@@ -32,6 +37,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 public class TestCommand {
 	
 	private static String WORK_FOLDER = "/home/christof/work";
+	private static String AFILE = "/home/christof/work/tmpFile.txt";
 	private static String EMPTY_FOLDER = "/home/christof/work/empty";
 	private static String NOT_EMPTY_FOLDER = "/home/christof/work/notEmpty";
 	private static String NOT_EMPTY_FOLDER_DATA01 = "/home/christof/work/notEmpty/data_01";
@@ -47,6 +53,17 @@ public class TestCommand {
 		manager.createFolder(new CreateFolderAction(NOT_EMPTY_FOLDER));
 		manager.createFolder(new CreateFolderAction(NOT_EMPTY_FOLDER_DATA01));
 		manager.createFolder(new CreateFolderAction(NOT_EMPTY_FOLDER_DATA02));
+		
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(AFILE, "UTF-8");
+			writer.println("The first line");
+			writer.println("The second line");
+			writer.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@After
@@ -127,5 +144,28 @@ public class TestCommand {
 		assertActionResult(action, null, "test_RenameFolder");
 		action=new ListAction(WORK_FOLDER+"/newName");
 		assertActionResult(action, null, "test_RenameFolder");
+	}
+
+	@Test
+	public void test_ZipFile() {
+		List<String> items=new ArrayList<String>();
+		items.add(AFILE);
+		items.add(WORK_FOLDER+"/toRename");
+		Action action=new CompressAction(items, WORK_FOLDER, "/zipFile.zip");
+		assertActionResult(action, null, "test_ZipFile");
+	}
+
+	@Test
+	public void test_ZipUnknownFile() {
+		List<String> items=new ArrayList<String>();
+		items.add("mazeltof");
+		Action action=new CompressAction(items, WORK_FOLDER, "/zipFile.zip");
+		assertActionResult(action, null, "test_ZipFile");
+	}
+
+	@Test
+	public void test_UnzipFile() {
+		Action action=new ExtractAction(WORK_FOLDER+"/zip", WORK_FOLDER+"/zipFile.zip", null);
+		assertActionResult(action, null, "test_UnzipFile");
 	}
 }

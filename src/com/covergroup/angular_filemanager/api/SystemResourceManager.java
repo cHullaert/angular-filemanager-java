@@ -12,6 +12,14 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipModel;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.progress.ProgressMonitor;
+import net.lingala.zip4j.zip.ZipEngine;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -207,6 +215,61 @@ public class SystemResourceManager implements IResourceManager {
 		}
 		
 		return createResponse(true, null);
+	}
+
+	@Override
+	public Response compressAction(CompressAction compressAction) {
+		// let default model
+		ZipModel zipModel=new ZipModel();
+		zipModel.setZipFile(relativePath+compressAction.getDestination()+compressAction.getCompressedFilename());
+
+		// let default parameter
+		ZipParameters zipParameter=new ZipParameters();
+		
+		ZipEngine engine;
+		try {
+			engine = new ZipEngine(zipModel);
+			ArrayList<File> files=new ArrayList<File>();
+			ArrayList<File> folders=new ArrayList<File>();
+			
+			compressAction.getItems().forEach((file)-> {
+				File oFile=new File(relativePath+file);
+				
+				if(oFile.isDirectory()) {
+					folders.add(oFile);
+				}
+				else {
+					files.add(oFile);
+				}
+			});
+			
+			for(File folder: folders)
+				engine.addFolderToZip(folder, zipParameter, new ProgressMonitor(), false);	
+			
+			engine.addFiles(files, zipParameter, new ProgressMonitor(), false);
+			
+			return createResponse(true, null);
+		} catch (ZipException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return createExceptionResponse(false, e);
+		}
+	}
+
+	@Override
+	public Response extract(ExtractAction extractAction) {
+		try {
+	         ZipFile zipFile = new ZipFile(relativePath+extractAction.getItem());
+	         zipFile.setRunInThread(true);
+	         if (zipFile.isEncrypted()) {
+	            zipFile.setPassword(extractAction.getPassword());
+	         }
+	         zipFile.extractAll(extractAction.getDestination());
+	         return this.createResponse(true, null);
+	    } catch (ZipException e) {
+	        e.printStackTrace();
+	        return this.createExceptionResponse(false, e);
+	    }	
 	}
 
 }

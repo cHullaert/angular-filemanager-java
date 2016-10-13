@@ -19,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 	@JsonSubTypes.Type(value=MoveAction.class, name="move"),
 	@JsonSubTypes.Type(value=RemoveAction.class, name="remove"),
 	@JsonSubTypes.Type(value=RenameAction.class, name="rename"),
-	@JsonSubTypes.Type(value=ListAction.class, name="list")
+	@JsonSubTypes.Type(value=ListAction.class, name="list"),
+	@JsonSubTypes.Type(value=CompressAction.class, name="compress"),
+	@JsonSubTypes.Type(value=ExtractAction.class, name="extract")
 })
 public abstract class Action {
 	public abstract Response execute(IResourceManager resourceManager);

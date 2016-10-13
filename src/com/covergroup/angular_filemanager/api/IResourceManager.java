@@ -15,5 +15,7 @@ public interface IResourceManager {
 	Response move(MoveAction action);
 	Response rename(RenameAction action);
 	Response remove(RemoveAction action);
+	Response compressAction(CompressAction compressAction);
+	Response extract(ExtractAction extractAction);
 
 }

@@ -2,15 +2,17 @@ package com.covergroup.angular_filemanager.api;
 
 public class ExtractAction extends Action {
 	private String destination;
+	private String folderName;
 	private String item;
 	private String password;
 
 	public ExtractAction() {
 	}
 
-	public ExtractAction(String destination, String item, String password) {
+	public ExtractAction(String destination, String folderName, String item, String password) {
 		super();
 		this.destination = destination;
+		this.folderName = folderName;
 		this.item = item;
 		this.password = password;
 	}
@@ -42,6 +44,14 @@ public class ExtractAction extends Action {
 	
 	public void setPassword(String password) {
 		this.password=password;
+	}
+	
+	public String getFolderName() {
+		this.folderName=folderName;
+	}
+	
+	public void setFolderName(String folderName) {
+		this.folderName=folderName;
 	}
 
 }

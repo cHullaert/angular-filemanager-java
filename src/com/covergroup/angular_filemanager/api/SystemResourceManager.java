@@ -264,7 +264,7 @@ public class SystemResourceManager implements IResourceManager {
 	         if (zipFile.isEncrypted()) {
 	            zipFile.setPassword(extractAction.getPassword());
 	         }
-	         zipFile.extractAll(extractAction.getDestination());
+	         zipFile.extractAll(relativePath+extractAction.getDestination()+extractAction.getFolderName());
 	         return this.createResponse(true, null);
 	    } catch (ZipException e) {
 	        e.printStackTrace();

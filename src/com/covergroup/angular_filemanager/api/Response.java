@@ -3,6 +3,8 @@
  */
 package com.covergroup.angular_filemanager.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author christof
  *
@@ -18,10 +20,12 @@ public class Response {
 		return result;
 	}
 	
+	@JsonIgnore
 	public boolean isValid() {
 		return (result!=null) && (result.isValid());
 	}
 	
+	@JsonIgnore
 	public boolean isEmpty() {
 		return result.isEmpty();
 	}

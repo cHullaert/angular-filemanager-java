@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author christof
  *
  */
-public class Response {
+public class Response extends AbstractData {
 	private Result result;
 
 	public Response(Result result) {

@@ -3,11 +3,13 @@
  */
 package com.covergroup.angular_filemanager.test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
+import com.covergroup.angular_filemanager.api.Action;
 import com.covergroup.angular_filemanager.api.CopyAction;
 import com.covergroup.angular_filemanager.api.Response;
 import com.covergroup.angular_filemanager.api.StdResult;
@@ -21,7 +23,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TestJson {
 	
 	@Test
-	public void test_01() throws JsonProcessingException {
+	public void test_01() throws IOException {
+
 		CopyAction copy=new CopyAction();
 		
 		List<String> items=new ArrayList<>();
@@ -34,6 +37,9 @@ public class TestJson {
 		String jsonString=mapper.writeValueAsString(copy);
 		
 		System.out.println(jsonString);
+		
+		Action action=mapper.readValue(jsonString, Action.class);
+		System.out.print(action.toString());
 	}
 	
 	@Test

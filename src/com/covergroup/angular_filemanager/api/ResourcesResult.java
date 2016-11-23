@@ -6,12 +6,15 @@ package com.covergroup.angular_filemanager.api;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author christof
  *
  */
 public class ResourcesResult extends Result {
+	@JsonProperty("result")
 	private List<Resource> resources;
 
 	public ResourcesResult(List<Resource> resources) {

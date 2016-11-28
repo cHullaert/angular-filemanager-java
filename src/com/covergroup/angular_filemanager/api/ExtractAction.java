@@ -47,7 +47,7 @@ public class ExtractAction extends Action {
 	}
 	
 	public String getFolderName() {
-		this.folderName=folderName;
+		return this.folderName;
 	}
 	
 	public void setFolderName(String folderName) {

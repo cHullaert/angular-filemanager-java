@@ -91,9 +91,12 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
+
+
+
 # subprojects
 /subprojects/
-
+data
 ######################
 # Intellij
 ######################
@@ -103,5 +106,5 @@ gradle-app.setting
 *.iws
 /out
 
-/data
+
 
